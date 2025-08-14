@@ -1,0 +1,6 @@
+@PublicityFileUploadDemo_HostAddress = http://localhost:5069
+
+GET {{PublicityFileUploadDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
