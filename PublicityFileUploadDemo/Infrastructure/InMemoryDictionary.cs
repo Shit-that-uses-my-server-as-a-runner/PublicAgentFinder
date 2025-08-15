@@ -54,7 +54,7 @@ public class InMemoryDictionary : IInMemoryDb
             foreach(var area in areas)
             {
                 var areaName = area.Trim(); //proper name, to suppress whitespace after ","
-                List<string> agents;
+                List<string>? agents;
                 var contains = db.TryGetValue(area, out agents);
 
                 if (contains)
@@ -78,3 +78,8 @@ public class InMemoryDictionary : IInMemoryDb
         return;
     }
 }
+
+/* Postman load tests perfomance:
+ *      get: 3ms average response time
+ *          4ms while loading small files
+ */

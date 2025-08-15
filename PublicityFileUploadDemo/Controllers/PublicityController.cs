@@ -51,7 +51,7 @@ public class PublicityController : ControllerBase
             {
                 result.AddRange(buf);
             }
-
+            
             pattern = pattern.Substring(0, posSlash);
         }
         

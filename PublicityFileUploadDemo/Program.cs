@@ -7,7 +7,7 @@ builder.Logging.
     ClearProviders().
     AddConsole();
 
-builder.Services.AddSingleton<IInMemoryDb, InMemoryDictionary>();
+builder.Services.AddSingleton<IInMemoryDb, InMemoryConcurrentDictionary>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
