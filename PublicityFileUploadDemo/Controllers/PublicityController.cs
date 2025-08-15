@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using PublicityFileUploadDemo.Abstractions;
 
 namespace PublicityFileUploadDemo.Controllers;
 
@@ -7,31 +8,58 @@ namespace PublicityFileUploadDemo.Controllers;
 public class PublicityController : ControllerBase
 {
 
-    private readonly ILogger<PublicityController> _logger;
+    private readonly ILogger<PublicityController> logger;
+    private readonly IInMemoryDb db;
 
-    public PublicityController(ILogger<PublicityController> logger)
+    public PublicityController(ILogger<PublicityController> logger, IInMemoryDb db)
     {
-        _logger = logger;
+        this.logger = logger;
+        this.db = db;
     }
 
     [HttpPost("load")]
-    public async Task<IActionResult> LoadFile(IFormFile file)
+    public async Task<IActionResult> LoadAsFormFile(IFormFile file)
     {
+        logger.LogInformation($"Loading a {file.FileName} through IFormFile");
         var stream = file.OpenReadStream();
-        var reader = new StreamReader(stream);
 
-        string? line;
-        while ((line = reader.ReadLine()) != null)
-            _logger.Log(LogLevel.Error, line);
-
-        reader.Close();
+        try
+        {
+            await db.LoadFromStreamAsync(stream);
+        } catch (Exception e)
+        {
+            return Problem(title: "Error processing document");
+        }
         
         return Ok();
     }
 
-    [HttpGet("hello")]
-    public async Task<IActionResult> Hello()
+    [HttpGet("getAgents")]
+    public async Task<ActionResult<IEnumerable<string>>> GetAgents([FromQuery]string pattern)
     {
-        return Ok();
+        var result = new List<string>();
+
+        int posSlash = 1;
+        while (posSlash > 0)
+        {
+            posSlash = pattern.LastIndexOf('/');
+
+            var buf = await db.GetByKeyAsync(pattern);
+            logger.LogInformation($"Searching for {pattern}");
+
+            if (buf is not null)
+            {
+                result.AddRange(buf);
+            }
+
+            pattern = pattern.Substring(0, posSlash);
+        }
+        
+        if(result.Count == 0)
+        {
+            return NoContent();
+        }
+
+        return Ok(result);
     }
 }

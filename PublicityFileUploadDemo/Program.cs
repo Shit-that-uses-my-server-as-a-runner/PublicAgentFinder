@@ -1,8 +1,13 @@
+using PublicityFileUploadDemo.Abstractions;
+using PublicityFileUploadDemo.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.
     ClearProviders().
     AddConsole();
+
+builder.Services.AddSingleton<IInMemoryDb, InMemoryDictionary>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
