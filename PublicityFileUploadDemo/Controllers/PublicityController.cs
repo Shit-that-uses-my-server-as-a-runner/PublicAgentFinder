@@ -35,24 +35,31 @@ public class PublicityController : ControllerBase
     }
 
     [HttpGet("getAgents")]
-    public async Task<ActionResult<IEnumerable<string>>> GetAgents([FromQuery]string pattern)
+    public async Task<ActionResult<IEnumerable<string>>> GetAgents([FromQuery]string location)
     {
+        //model checking: first symbol must be '/'
+        //  - otherwise exception will be thrown at line 58
+        if (location[0] != '/')
+        {
+            return BadRequest("Invalid location format");
+        }
+
         var result = new List<string>();
 
         int posSlash = 1;
         while (posSlash > 0)
         {
-            posSlash = pattern.LastIndexOf('/');
+            posSlash = location.LastIndexOf('/');
 
-            var buf = await db.GetByKeyAsync(pattern);
-            logger.LogInformation($"Searching for {pattern}");
+            var buf = await db.GetByKeyAsync(location);
+            logger.LogInformation($"Searching for {location}");
 
             if (buf is not null)
             {
                 result.AddRange(buf);
             }
             
-            pattern = pattern.Substring(0, posSlash);
+            location = location.Substring(0, posSlash);
         }
         
         if(result.Count == 0)
