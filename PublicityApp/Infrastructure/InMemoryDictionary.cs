@@ -1,4 +1,5 @@
 ﻿using PublicityApp.Abstractions;
+using PublicityApp.Abstractions.Exceptions;
 
 namespace PublicityApp.Infrastructure;
 
@@ -48,10 +49,20 @@ public class InMemoryDictionary : IInMemoryDb
 
         while ((line = await reader.ReadLineAsync()) != null)
         {
-            string[] info = line.Split(':');
-            string agent = info[0].Trim();
-            string[] areas = info[1].Split(',');
-            foreach(var area in areas)
+            string[] info;
+            string agent;
+            string[] areas;
+            try
+            {
+                info = line.Split(':');
+                agent = info[0].Trim();
+                areas = info[1].Split(',');
+            }
+            catch
+            {
+                throw new InvalidLoadFileFormatException(line);
+            }
+            foreach (var area in areas)
             {
                 var areaName = area.Trim(); //proper name, to suppress whitespace after ","
                 List<string>? agents;

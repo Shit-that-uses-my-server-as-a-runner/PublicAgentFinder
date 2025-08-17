@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
 using PublicityApp.Abstractions;
+using PublicityApp.Abstractions.Exceptions;
 using PublicityApp.Infrastructure;
 using System;
 using System.Collections;
@@ -69,5 +70,37 @@ public class InMemoryDbTests
         Assert.True((await db.GetByKeyAsync("/ru/msk")).Count() == 1);
         Assert.True((await db.GetByKeyAsync("/ru/chelobl")).Count() == 1);
         Assert.True((await db.GetByKeyAsync("/ru/svrd")).Count() == 1);
+    }
+
+
+    [Theory]
+    [ClassData(typeof(LoadAndGetData))]
+    public async Task LoadInvalidFormatFileRaisesException(IInMemoryDb db)
+    {
+        var content = @"Яндекс.Директ:/ru
+            D:/ru/msk,   /ru/len,  no_location, anyway
+            Ревдин /ru/svda,/ru/svrd/pervik
+            Газета уральских москвичей:/ru/msk,/ru/permobl,/ru/chelobl
+            Крутая реклама:/ru/svrd";
+
+        var stream = new MemoryStream();
+        var writer = new StreamWriter(stream);
+        writer.Write(content);
+        writer.Flush();
+        stream.Position = 0;
+
+        try
+        {
+            await db.LoadFromStreamAsync(stream);
+            
+        }catch(Exception e)
+        {
+            Assert.True(e is InvalidLoadFileFormatException);
+            Assert.Equal("Ревдин /ru/svda,/ru/svrd/pervik", e.Message.Trim());
+        }
+        finally
+        {
+            writer.Close();
+        }
     }
 }

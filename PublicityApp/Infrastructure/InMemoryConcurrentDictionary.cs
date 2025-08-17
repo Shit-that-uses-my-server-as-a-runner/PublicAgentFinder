@@ -1,4 +1,5 @@
 ﻿using PublicityApp.Abstractions;
+using PublicityApp.Abstractions.Exceptions;
 using System.Collections.Concurrent;
 using System.Threading;
 
@@ -45,9 +46,19 @@ public class InMemoryConcurrentDictionary : IInMemoryDb
 
         while ((line = await reader.ReadLineAsync()) != null)
         {
-            string[] info = line.Split(':');
-            string agent = info[0].Trim();
-            string[] areas = info[1].Split(',');
+            string[] info;
+            string agent;
+            string[] areas;
+            try
+            {
+                info = line.Split(':');
+                agent = info[0].Trim();
+                areas = info[1].Split(',');
+            }
+            catch
+            {
+                throw new InvalidLoadFileFormatException(line);
+            }
             foreach (var area in areas)
             {
                 var areaName = area.Trim(); //proper name, to suppress whitespace after ","

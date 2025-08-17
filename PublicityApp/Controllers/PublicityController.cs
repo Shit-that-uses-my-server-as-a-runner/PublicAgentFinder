@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PublicityApp.Abstractions;
+using PublicityApp.Abstractions.Exceptions;
 
 namespace PublicityApp.Controllers;
 
@@ -28,6 +29,8 @@ public class PublicityController : ControllerBase
             await db.LoadFromStreamAsync(stream);
         } catch (Exception e)
         {
+            if (e is InvalidLoadFileFormatException)
+                return BadRequest($"Invalid format in the following line: {e.Message}");
             return Problem(title: "Error processing document");
         }
         
@@ -51,8 +54,8 @@ public class PublicityController : ControllerBase
         {
             posSlash = location.LastIndexOf('/');
 
+            logger.LogDebug($"Searching for {location}");
             var buf = await db.GetByKeyAsync(location);
-            logger.LogInformation($"Searching for {location}");
 
             if (buf is not null)
             {
