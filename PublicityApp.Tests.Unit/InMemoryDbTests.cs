@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
-using PublicityFileUploadDemo.Abstractions;
-using PublicityFileUploadDemo.Infrastructure;
+using PublicityApp.Abstractions;
+using PublicityApp.Infrastructure;
 using System;
 using System.Collections;
 using System.Collections.Generic;

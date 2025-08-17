@@ -1,8 +1,8 @@
-﻿using PublicityFileUploadDemo.Abstractions;
+﻿using PublicityApp.Abstractions;
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace PublicityFileUploadDemo.Infrastructure;
+namespace PublicityApp.Infrastructure;
 
 public class InMemoryConcurrentDictionary : IInMemoryDb
 {

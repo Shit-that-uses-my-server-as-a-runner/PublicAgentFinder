@@ -1,5 +1,5 @@
-using PublicityFileUploadDemo.Abstractions;
-using PublicityFileUploadDemo.Infrastructure;
+using PublicityApp.Abstractions;
+using PublicityApp.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +7,7 @@ builder.Logging.
     ClearProviders().
     AddConsole();
 
+//feel free to test with "InMemoryDictionary", but this implementation turns out to be a bit faster
 builder.Services.AddSingleton<IInMemoryDb, InMemoryConcurrentDictionary>();
 
 builder.Services.AddControllers();

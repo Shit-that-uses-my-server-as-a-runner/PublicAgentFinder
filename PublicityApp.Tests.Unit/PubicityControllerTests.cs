@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
-using PublicityFileUploadDemo.Abstractions;
-using PublicityFileUploadDemo.Controllers;
+using PublicityApp.Abstractions;
+using PublicityApp.Controllers;
 
 namespace PublicityApp.Tests.Unit;
 

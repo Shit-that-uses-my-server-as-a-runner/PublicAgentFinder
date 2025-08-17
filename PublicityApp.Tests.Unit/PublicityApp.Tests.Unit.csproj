@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PublicityFileUploadDemo\PublicityFileUploadDemo.csproj" />
+    <ProjectReference Include="..\PublicityApp\PublicityApp.csproj" />
+    <ProjectReference Include="..\PublicityFileUploadDemo\PublicityApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

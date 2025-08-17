@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using PublicityFileUploadDemo.Abstractions;
+using PublicityApp.Abstractions;
 
-namespace PublicityFileUploadDemo.Controllers;
+namespace PublicityApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]

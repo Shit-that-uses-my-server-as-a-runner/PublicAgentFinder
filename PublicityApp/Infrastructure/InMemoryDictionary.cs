@@ -1,6 +1,6 @@
-﻿using PublicityFileUploadDemo.Abstractions;
+﻿using PublicityApp.Abstractions;
 
-namespace PublicityFileUploadDemo.Infrastructure;
+namespace PublicityApp.Infrastructure;
 
 public class InMemoryDictionary : IInMemoryDb
 {

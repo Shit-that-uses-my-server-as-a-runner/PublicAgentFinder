@@ -1,4 +1,4 @@
-﻿namespace PublicityFileUploadDemo.Abstractions;
+﻿namespace PublicityApp.Abstractions;
 
 public interface IInMemoryDb
 {
