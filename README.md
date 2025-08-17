@@ -1,7 +1,7 @@
 A problem for EffectiveMobile company
 Api must posess two features:
-Loading data about publicity agencies from a file
-Checking, which agencies perform in the specified location
+1. Loading data about publicity agencies from a file
+2. Checking, which agencies perform in the specified location
 
 Both actions are resolved by the same controller.
 The first is to be found at Publicity/load It is a POST endpoint
